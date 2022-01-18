@@ -1,6 +1,7 @@
 
 
 import requests
+import bs4
 
 
 def generator(exam_no, remove, stop, start=0):
@@ -29,7 +30,7 @@ def generator(exam_no, remove, stop, start=0):
     return list_exams
 
 
-def messager(examno):
+def Requester(examno):
     """
     *******************************************************
     |+ This function receives the examination number and
@@ -49,18 +50,37 @@ def messager(examno):
     except:
         print("Problem occured")
 
-    return HTML
+    return print(type(HTML))
 
 
-print(messager(190910420550))
+Requester(190910420550)
 
 
-def sender():
-    pass
+def to_file():
+    txt = open("Exam_result.txt", 'a')
+    txt.write('hey there')
+    txt.close()
 
 
-def formatter():
-    pass
+def formatter(html_file):
+    t = open(html_file)
+    details = bs4.BeautifulSoup(t, "html.parser")
+    item = details.select("td")
+
+    Examin_num, name, Aggre_score, sub_passed = item[0], item[2], item[5], item[6]
+
+    Examin_num = Examin_num.get_text()
+    name = name.get_text()
+    Aggre_score = Aggre_score.get_text()
+    sub_passed = sub_passed.get_text()
+
+    txt = "+----------------------------------------+\n{}\n{}\n{}\n{}\n+----------------------------------------+ \n".format(
+        Examin_num, name, Aggre_score, sub_passed)
+
+    print(txt)
+
+
+formatter("file.html")
 
 
 def display():
