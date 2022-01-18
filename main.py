@@ -1,5 +1,7 @@
 
 
+from re import I
+from tokenize import String
 import requests
 import bs4
 
@@ -50,21 +52,38 @@ def Requester(examno):
     except:
         print("Problem occured")
 
-    return print(type(HTML))
+    t = open("index.html", 'a')
+    t.write(HTML)
+    t.close()
+
+    return print(HTML)
 
 
-Requester(190910420550)
+Requester("190910420530")
 
 
-def to_file():
+def to_file(wat_to_rit):
+    """
+    *******************************************************
+    |+ Saves the txt to a file
+    |+ input string => output txt file
+    ********************************************************
+    """
+
     txt = open("Exam_result.txt", 'a')
-    txt.write('hey there')
+    txt.write(wat_to_rit)
     txt.close()
 
 
-def formatter(html_file):
-    t = open(html_file)
-    details = bs4.BeautifulSoup(t, "html.parser")
+def formatter(html_txt):
+    """
+    *******************************************************
+    |+ This function take in a string html and parses it 
+    |+ returning a dictionary of key and values pairs
+    ********************************************************
+    """
+
+    details = bs4.BeautifulSoup(html_txt, "html.parser")
     item = details.select("td")
 
     Examin_num, name, Aggre_score, sub_passed = item[0], item[2], item[5], item[6]
@@ -74,14 +93,25 @@ def formatter(html_file):
     Aggre_score = Aggre_score.get_text()
     sub_passed = sub_passed.get_text()
 
+    lst = [Examin_num, name, Aggre_score, sub_passed]
+    tionary = {}
+
+    for item in lst:
+        for i in range(2):
+            temp_list = item.split(" : ")
+            tionary[temp_list[0]] = temp_list[1]
+
+    return tionary
+
+
+# print(formatter(Requester(190910420550)))
+
+
+def display(name):
+    Examin_num = ""
+    name = ""
+    Aggre_score = ""
+    sub_passed = ""
+
     txt = "+----------------------------------------+\n{}\n{}\n{}\n{}\n+----------------------------------------+ \n".format(
         Examin_num, name, Aggre_score, sub_passed)
-
-    print(txt)
-
-
-formatter("file.html")
-
-
-def display():
-    pass
