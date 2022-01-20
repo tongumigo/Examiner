@@ -1,12 +1,12 @@
 from  Exam_funcs import *
 
 #Generate a list of examination numbers
-lst =  generator(190910420550,2,5)
+lst =  generator(190910420550,2,50)
 lst2 = generator(190910420550,2,99,51)
 lst3 = generator(190910420550,3,150,10)
 lst4 = generator(190910420550,3,200,151)
 lst5 = generator(190910420550,3,250,201)
-dic = [lst,lst2,lst3,lst4,lst5]
+dic = [lst2,lst3,lst4,lst5]
 
 #Send requests and save results to file
 def send_n_save(lst):
@@ -36,4 +36,6 @@ def main():
     for i in dic:
         send_n_save(i)
 
-send_n_save(lst)
+#send_n_save(lst)
+main()
+print(find("MOREEN"))
