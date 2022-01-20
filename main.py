@@ -43,23 +43,25 @@ def Requester(examno):
     """
 
     HTML = ""
+    examno = str(examno)
     url = "https://eservices.exams-council.org.zm/e-sor/g9_int_statement_can.php"
     payload_2 = {'examno': examno, 'submit': 'Continue >'}
 
     try:
-        res = requests.post(url, files=payload_2)
+        res = requests.post(url, files=payload_2,data=payload_2)
+    
         HTML = res.text
     except:
         print("Problem occured")
 
-    t = open("index.html", 'a')
-    t.write(HTML)
-    t.close()
+    #t = open("index.html", 'w')
+    # t.write(HTML)
+    # t.close()
 
-    return print(HTML)
+    return HTML
 
 
-Requester("190910420530")
+
 
 
 def to_file(wat_to_rit):
@@ -84,9 +86,13 @@ def formatter(html_txt):
     """
 
     details = bs4.BeautifulSoup(html_txt, "html.parser")
-    item = details.select("td")
+    item =  details.select("td strong")
+    item1 = details.select("td h5")
 
-    Examin_num, name, Aggre_score, sub_passed = item[0], item[2], item[5], item[6]
+    
+
+
+    Examin_num, name, Aggre_score, sub_passed = item[0], item[2], item1[1], item1[2]
 
     Examin_num = Examin_num.get_text()
     name = name.get_text()
@@ -94,17 +100,21 @@ def formatter(html_txt):
     sub_passed = sub_passed.get_text()
 
     lst = [Examin_num, name, Aggre_score, sub_passed]
+    
     tionary = {}
+    
 
     for item in lst:
         for i in range(2):
             temp_list = item.split(" : ")
+            
             tionary[temp_list[0]] = temp_list[1]
+           
 
     return tionary
 
 
-# print(formatter(Requester(190910420550)))
+print(formatter(Requester(190910420551)))
 
 
 def display(name):
